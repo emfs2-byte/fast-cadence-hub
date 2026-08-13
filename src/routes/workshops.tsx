@@ -5,9 +5,9 @@ import { EmptyState, ErrorState, SkeletonRows } from "@/components/feedback/Stat
 import { PageHeader } from "@/components/layout/PageHeader";
 import { WorkshopDetailPanel } from "@/components/workshops/WorkshopDetailPanel";
 import { WorkshopList } from "@/components/workshops/WorkshopList";
-import type { Workshop } from "@/data/mocks";
-import { useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
-import { ordenarPorData } from "@/lib/participacao";
+import { useAlternarPresenca, useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
+import { ordenarWorkshops, type CampoOrdem, type DirecaoOrdem } from "@/lib/ordenacao";
+
 
 export const Route = createFileRoute("/workshops")({
   head: () => ({
