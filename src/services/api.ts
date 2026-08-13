@@ -6,12 +6,12 @@
 const DEFAULT_DELAY_MS = 700;
 
 export class ApiError extends Error {
-  constructor(
-    message: string,
-    public readonly cause?: unknown,
-  ) {
+  readonly detalhe?: unknown;
+
+  constructor(message: string, detalhe?: unknown) {
     super(message);
     this.name = "ApiError";
+    this.detalhe = detalhe;
   }
 }
 
