@@ -23,7 +23,7 @@ export function CadenceTimeline({ workshops }: CadenceTimelineProps) {
 
   const nos = ordenados.map((workshop, index) => {
     const t = new Date(workshop.dataRealizacao).getTime();
-    const x = ordenados.length === 1 ? 50 : 6 + ((t - inicio) / intervalo) * 88;
+    const x = ordenados.length === 1 ? 50 : 13 + ((t - inicio) / intervalo) * 74;
     return {
       workshop,
       x,
