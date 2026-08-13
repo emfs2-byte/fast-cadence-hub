@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BarChart3, Presentation, Users, Terminal } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { to: "/", label: "Colaboradores", icon: Users },
@@ -46,6 +47,10 @@ export function AppSidebar() {
           </Link>
         ))}
       </nav>
+
+      <div className="border-t border-sidebar-border px-2 py-2 lg:px-3">
+        <ThemeToggle />
+      </div>
 
       <div className="hidden border-t border-sidebar-border px-5 py-4 lg:block">
         <p className="mono-tag text-navy-muted">cadência trimestral</p>

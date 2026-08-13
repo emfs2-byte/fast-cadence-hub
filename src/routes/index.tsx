@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Users } from "lucide-react";
+import { useState } from "react";
+import { Search, Users } from "lucide-react";
 import { ColaboradorCard } from "@/components/colaboradores/ColaboradorCard";
 import { EmptyState, ErrorState, SkeletonGrid } from "@/components/feedback/StateViews";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
+import { filtrarPorNome } from "@/lib/ordenacao";
 import { contarParticipacoes } from "@/lib/participacao";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,12 +29,13 @@ export const Route = createFileRoute("/")({
 });
 
 function ColaboradoresPage() {
+  const [busca, setBusca] = useState("");
   const colaboradoresQuery = useColaboradores();
   const workshopsQuery = useWorkshops();
 
   const carregando = colaboradoresQuery.isLoading || workshopsQuery.isLoading;
   const erro = colaboradoresQuery.error ?? workshopsQuery.error;
-  const colaboradores = colaboradoresQuery.data ?? [];
+  const colaboradores = filtrarPorNome(colaboradoresQuery.data ?? [], busca);
   const workshops = workshopsQuery.data ?? [];
 
   return (
@@ -49,6 +53,20 @@ function ColaboradoresPage() {
         }
       />
 
+      {!carregando && !erro ? (
+        <div className="relative max-w-sm">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={busca}
+            onChange={(event) => setBusca(event.target.value)}
+            placeholder="Buscar por nome…"
+            aria-label="Buscar colaborador por nome"
+            className="w-full rounded-md border border-border bg-card py-2 pl-9 pr-3 font-mono text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
+          />
+        </div>
+      ) : null}
+
       {carregando ? (
         <SkeletonGrid count={6} />
       ) : erro ? (
@@ -62,8 +80,12 @@ function ColaboradoresPage() {
       ) : colaboradores.length === 0 ? (
         <EmptyState
           icon={<Users className="size-5" />}
-          title="Nenhum colaborador cadastrado"
-          description="Assim que a equipe for registrada, os cards de participação aparecem aqui."
+          title={busca ? "Nenhum colaborador encontrado" : "Nenhum colaborador cadastrado"}
+          description={
+            busca
+              ? `Nenhum nome corresponde a “${busca}”. Ajuste a busca e tente novamente.`
+              : "Assim que a equipe for registrada, os cards de participação aparecem aqui."
+          }
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -79,3 +101,4 @@ function ColaboradoresPage() {
     </div>
   );
 }
+

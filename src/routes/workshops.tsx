@@ -5,9 +5,9 @@ import { EmptyState, ErrorState, SkeletonRows } from "@/components/feedback/Stat
 import { PageHeader } from "@/components/layout/PageHeader";
 import { WorkshopDetailPanel } from "@/components/workshops/WorkshopDetailPanel";
 import { WorkshopList } from "@/components/workshops/WorkshopList";
-import type { Workshop } from "@/data/mocks";
-import { useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
-import { ordenarPorData } from "@/lib/participacao";
+import { useAlternarPresenca, useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
+import { ordenarWorkshops, type CampoOrdem, type DirecaoOrdem } from "@/lib/ordenacao";
+
 
 export const Route = createFileRoute("/workshops")({
   head: () => ({
@@ -29,13 +29,27 @@ export const Route = createFileRoute("/workshops")({
 });
 
 function WorkshopsPage() {
-  const [selecionado, setSelecionado] = useState<Workshop | null>(null);
+  const [selecionadoId, setSelecionadoId] = useState<number | null>(null);
+  const [campo, setCampo] = useState<CampoOrdem>("data");
+  const [direcao, setDirecao] = useState<DirecaoOrdem>("asc");
+
   const workshopsQuery = useWorkshops();
   const colaboradoresQuery = useColaboradores();
+  const alternarPresenca = useAlternarPresenca();
 
   const carregando = workshopsQuery.isLoading || colaboradoresQuery.isLoading;
   const erro = workshopsQuery.error ?? colaboradoresQuery.error;
-  const workshops = ordenarPorData(workshopsQuery.data ?? []);
+  const workshops = ordenarWorkshops(workshopsQuery.data ?? [], campo, direcao);
+  const selecionado = workshops.find((item) => item.id === selecionadoId) ?? null;
+
+  function ordenarPor(proximo: CampoOrdem) {
+    if (proximo === campo) {
+      setDirecao((atual) => (atual === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setCampo(proximo);
+    setDirecao("asc");
+  }
 
   return (
     <div className="flex gap-6">
@@ -66,7 +80,10 @@ function WorkshopsPage() {
           <WorkshopList
             workshops={workshops}
             selecionadoId={selecionado?.id}
-            onSelecionar={setSelecionado}
+            campo={campo}
+            direcao={direcao}
+            onOrdenar={ordenarPor}
+            onSelecionar={(workshop) => setSelecionadoId(workshop.id)}
           />
         )}
       </div>
@@ -75,9 +92,13 @@ function WorkshopsPage() {
         <WorkshopDetailPanel
           workshop={selecionado}
           colaboradores={colaboradoresQuery.data ?? []}
-          onFechar={() => setSelecionado(null)}
+          onAlternarPresenca={(colaboradorId) => {
+            if (selecionado) alternarPresenca.mutate({ workshop: selecionado, colaboradorId });
+          }}
+          onFechar={() => setSelecionadoId(null)}
         />
       </div>
     </div>
   );
 }
+

@@ -1,8 +1,10 @@
 import { workshopsMock, type Workshop } from "@/data/mocks";
 import { ApiError, simulateRequest } from "./api";
+import { aplicarPresencas } from "./presencaService";
 
 export async function listarWorkshops(): Promise<Workshop[]> {
-  return simulateRequest(workshopsMock, { resource: "os workshops" });
+  const workshops = await simulateRequest(workshopsMock, { resource: "os workshops" });
+  return aplicarPresencas(workshops);
 }
 
 export async function buscarWorkshop(id: number): Promise<Workshop> {
