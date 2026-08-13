@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Users } from "lucide-react";
+import { useState } from "react";
+import { Search, Users } from "lucide-react";
 import { ColaboradorCard } from "@/components/colaboradores/ColaboradorCard";
 import { EmptyState, ErrorState, SkeletonGrid } from "@/components/feedback/StateViews";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
+import { filtrarPorNome } from "@/lib/ordenacao";
 import { contarParticipacoes } from "@/lib/participacao";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
