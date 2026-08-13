@@ -71,15 +71,7 @@ function WorkshopsPage() {
         )}
       </div>
 
-      <div className={selecionado ? "hidden lg:block lg:w-96 lg:shrink-0" : "hidden"}>
-        <WorkshopDetailPanel
-          workshop={selecionado}
-          colaboradores={colaboradoresQuery.data ?? []}
-          onFechar={() => setSelecionado(null)}
-        />
-      </div>
-
-      <div className="lg:hidden">
+      <div className={selecionado ? "lg:w-96 lg:shrink-0" : ""}>
         <WorkshopDetailPanel
           workshop={selecionado}
           colaboradores={colaboradoresQuery.data ?? []}

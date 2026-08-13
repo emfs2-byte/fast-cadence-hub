@@ -4,7 +4,7 @@ import { formatarData, formatarTrimestre } from "@/lib/format";
 
 interface WorkshopListProps {
   workshops: Workshop[];
-  selecionadoId?: number;
+  selecionadoId?: number | undefined;
   onSelecionar: (workshop: Workshop) => void;
 }
 
