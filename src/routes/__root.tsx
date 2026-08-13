@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { AppSidebar } from "../components/layout/AppSidebar";
+import { NextWorkshopBanner } from "../components/layout/NextWorkshopBanner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -132,6 +133,7 @@ function RootComponent() {
       <div className="flex min-h-screen bg-background">
         <AppSidebar />
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-8 sm:py-10">
+          <NextWorkshopBanner />
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
