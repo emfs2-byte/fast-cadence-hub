@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "FAST Soluções — Workshops API",
+    "description": "Coleção da API REST de workshops trimestrais, colaboradores e atas de presença (Desafio 1a — Etapa Backend).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{token}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://localhost:5001" },
+    { "key": "token", "value": "" },
+    { "key": "colaboradorId", "value": "1" },
+    { "key": "workshopId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "  console.log('Token salvo na variável {{token}}');",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"comite.workshops\",\n  \"senha\": \"fast@2025\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Colaboradores",
+      "item": [
+        {
+          "name": "Listar colaboradores",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/colaboradores", "host": ["{{baseUrl}}"], "path": ["api", "colaboradores"] }
+          }
+        },
+        {
+          "name": "Obter colaborador por Id",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/api/colaboradores/{{colaboradorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "colaboradores", "{{colaboradorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Criar colaborador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) { pm.collectionVariables.set('colaboradorId', res.id); }",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/colaboradores", "host": ["{{baseUrl}}"], "path": ["api", "colaboradores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Helena Duarte\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Atualizar colaborador",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/colaboradores/{{colaboradorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "colaboradores", "{{colaboradorId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Helena Duarte Martins\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remover colaborador",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/colaboradores/{{colaboradorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "colaboradores", "{{colaboradorId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workshops",
+      "item": [
+        {
+          "name": "Listar workshops",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/workshops", "host": ["{{baseUrl}}"], "path": ["api", "workshops"] }
+          }
+        },
+        {
+          "name": "Obter workshop por Id (com ata de presença)",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/api/workshops/{{workshopId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "workshops", "{{workshopId}}"]
+            }
+          }
+        },
+        {
+          "name": "Criar workshop",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) { pm.collectionVariables.set('workshopId', res.id); }",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/workshops", "host": ["{{baseUrl}}"], "path": ["api", "workshops"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"IA Aplicada ao Dia a Dia Dev\",\n  \"dataRealizacao\": \"2026-03-12T16:00:00Z\",\n  \"descricao\": \"Ferramentas de IA no fluxo de desenvolvimento: geração de código, revisão automatizada e limitações.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Atualizar workshop",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/workshops/{{workshopId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "workshops", "{{workshopId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"IA Aplicada ao Dia a Dia Dev (atualizado)\",\n  \"dataRealizacao\": \"2026-03-12T16:00:00Z\",\n  \"descricao\": \"Descrição revisada do workshop.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remover workshop",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/workshops/{{workshopId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "workshops", "{{workshopId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Presenças (Ata)",
+      "item": [
+        {
+          "name": "Registrar presença (check-in)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/workshops/{{workshopId}}/presencas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "workshops", "{{workshopId}}", "presencas"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"colaboradorId\": {{colaboradorId}}\n}"
+            }
+          }
+        },
+        {
+          "name": "Remover presença",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/workshops/{{workshopId}}/presencas/{{colaboradorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "workshops", "{{workshopId}}", "presencas", "{{colaboradorId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
