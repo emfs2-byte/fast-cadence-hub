@@ -61,7 +61,7 @@ O projeto é dividido em dois serviços independentes que conversam via API REST
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/<seu-usuario>/fast-cadence-hub.git
+git clone https://github.com/<emfs2-byte>/fast-cadence-hub.git
 cd fast-cadence-hub
 ```
 
