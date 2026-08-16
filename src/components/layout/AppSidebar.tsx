@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { BarChart3, Presentation, Users, Terminal } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { AuthPanel } from "./AuthPanel";
 
 const navItems = [
   { to: "/", label: "Colaboradores", icon: Users },
@@ -48,7 +49,8 @@ export function AppSidebar() {
         ))}
       </nav>
 
-      <div className="border-t border-sidebar-border px-2 py-2 lg:px-3">
+      <div className="space-y-1 border-t border-sidebar-border px-2 py-2 lg:px-3">
+        <AuthPanel />
         <ThemeToggle />
       </div>
 

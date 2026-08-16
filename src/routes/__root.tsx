@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { AppSidebar } from "../components/layout/AppSidebar";
 import { NextWorkshopBanner } from "../components/layout/NextWorkshopBanner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -132,12 +133,14 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen bg-background">
         <AppSidebar />
+
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-8 sm:py-10">
           <NextWorkshopBanner />
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
       </div>
+
+      <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
 }

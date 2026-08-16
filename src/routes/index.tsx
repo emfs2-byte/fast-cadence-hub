@@ -8,7 +8,6 @@ import { useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
 import { filtrarPorNome } from "@/lib/ordenacao";
 import { contarParticipacoes } from "@/lib/participacao";
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -101,4 +100,3 @@ function ColaboradoresPage() {
     </div>
   );
 }
-

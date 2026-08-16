@@ -67,9 +67,8 @@ export function CadenceTimeline({ workshops }: CadenceTimelineProps) {
                 }`}
               >
                 <p className="mono-tag text-royal-soft">
-                  {formatarTrimestre(workshop.dataRealizacao)} · {formatarData(
-                    workshop.dataRealizacao,
-                  )}
+                  {formatarTrimestre(workshop.dataRealizacao)} ·{" "}
+                  {formatarData(workshop.dataRealizacao)}
                 </p>
                 <p className="mt-1 text-xs font-medium leading-snug text-navy-foreground">
                   {workshop.nome}

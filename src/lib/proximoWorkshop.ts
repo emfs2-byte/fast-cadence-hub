@@ -11,9 +11,7 @@ export function proximoWorkshop(
 ): ProximoWorkshopInfo | null {
   const futuros = workshops
     .filter((workshop) => new Date(workshop.dataRealizacao).getTime() > agora.getTime())
-    .sort(
-      (a, b) => new Date(a.dataRealizacao).getTime() - new Date(b.dataRealizacao).getTime(),
-    );
+    .sort((a, b) => new Date(a.dataRealizacao).getTime() - new Date(b.dataRealizacao).getTime());
 
   const alvo = futuros[0];
   if (!alvo) return null;
