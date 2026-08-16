@@ -19,42 +19,117 @@
 
 ## 📋 Descrição do Projeto
 
-O **FAST Cadence Hub** centraliza o acompanhamento dos workshops trimestrais de desenvolvimento de software da FAST Soluções. Antes, a participação era controlada manualmente; agora o comitê organizador tem uma interface única para visualizar colaboradores, consultar os workshops realizados, registrar presença em tempo real (check-in) e enxergar métricas de engajamento ao longo do tempo.
+O **FAST Cadence Hub** centraliza o acompanhamento dos workshops trimestrais de desenvolvimento de software da FAST Soluções.
 
-O projeto é dividido em dois serviços independentes que conversam via API REST: um **backend em C#/.NET** responsável pelos dados e regras de negócio, e um **frontend em React** responsável pela experiência do comitê organizador.
+A aplicação permite ao comitê organizador visualizar colaboradores, consultar os workshops realizados, registrar presença em tempo real por meio de uma ata digital e acompanhar métricas de participação ao longo do tempo.
+
+O projeto é dividido em dois serviços independentes que se comunicam via **API REST**:
+
+* um **backend em C# / ASP.NET Core**, responsável pelos dados, persistência, autenticação e regras de negócio;
+* um **frontend em React + TypeScript**, responsável pela experiência do usuário e visualização dos dados.
+
+---
+
+## 🖼️ Demonstração
+
+### 📊 Dashboard
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/31595b70-e858-44a6-95b5-6134b93b1607"
+    alt="Dashboard do FAST Cadence Hub"
+    width="900"
+  />
+</p>
+
+### 🗓️ Workshops
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/e2d89b15-18da-402e-b841-e0f63f9633e0"
+    alt="Tela de workshops do FAST Cadence Hub"
+    width="900"
+  />
+</p>
+
+### 👥 Colaboradores
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/e0c57d83-6df3-4181-bd1b-7afbb0692ad2"
+    alt="Tela de colaboradores do FAST Cadence Hub"
+    width="900"
+  />
+</p>
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/9e6c2a8c-86cc-4580-a29d-e90fc5d68972"
+    alt="Gestão de colaboradores do FAST Cadence Hub"
+    width="900"
+  />
+</p>
+
+### 📖 Swagger / API
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/b9c4d41e-928b-44ab-802e-9abaf16f883a"
+    alt="Documentação Swagger da API FAST Cadence Hub"
+    width="900"
+  />
+</p>
+
+---
 
 ## 🚀 Funcionalidades Principais
 
-* 👥 **Cadastro de Colaboradores** — CRUD completo, com contagem automática de workshops concluídos por pessoa.
-* 🗓️ **Agenda de Workshops** — lista ordenável por nome, data ou número de presentes, com painel de detalhes ao clicar.
-* ✅ **Check-in de Presença (Ata Digital)** — registra e remove presença de colaboradores em tempo real, persistido no banco (não mais em mock ou localStorage).
-* 📊 **Dashboard de Participação** — cards de métricas, linha do tempo de cadência trimestral (estilo grafo de commits) e gráficos de barra/pizza de engajamento.
-* 🖨️ **Exportação de Ata em PDF** — gera o comprovante de presença de cada workshop com um clique.
-* 🔐 **Autenticação JWT** — login do comitê organizador protege as ações de escrita (criar, editar, excluir e check-in); leitura permanece pública.
-* 📖 **Documentação Interativa (Swagger)** — todos os endpoints documentados e testáveis direto no navegador.
+* 👥 **Cadastro de Colaboradores** — CRUD completo, com contagem automática de workshops participados por pessoa.
+* 🗓️ **Agenda de Workshops** — lista ordenável por nome, data ou número de presentes, com painel de detalhes.
+* ✅ **Check-in de Presença (Ata Digital)** — registra e remove presença de colaboradores com persistência no banco de dados.
+* 📊 **Dashboard de Participação** — cards de métricas, linha do tempo de cadência trimestral e gráficos de participação.
+* 🖨️ **Exportação de Ata em PDF** — gera um documento com os dados e participantes de cada workshop.
+* 🔐 **Autenticação JWT** — protege operações de criação, edição, exclusão e gerenciamento de presença.
+* 🌐 **Leitura Pública** — consultas de colaboradores e workshops podem ser realizadas sem autenticação.
+* 📖 **Documentação Interativa (Swagger)** — endpoints documentados e testáveis diretamente pelo navegador.
+
+---
 
 ## 🛠️ Tecnologias e Linguagens
 
-| Camada         | Tecnologia                    | Função                                                         |
-| -------------- | ----------------------------- | -------------------------------------------------------------- |
-| Frontend       | React + TypeScript + Vite     | SPA com roteamento via TanStack Router                         |
-| Estado & dados | TanStack Query                | Cache, loading e sincronização com a API                       |
-| Estilo         | Tailwind CSS + shadcn/ui      | Componentes acessíveis e identidade visual azul/branco da FAST |
-| Gráficos       | Recharts                      | Dashboard de participação                                      |
-| Backend        | ASP.NET Core Web API (.NET 8) | API REST — CRUD de colaboradores, workshops e presenças        |
-| ORM            | Entity Framework Core         | Mapeamento objeto-relacional e migrations                      |
-| Banco de Dados | SQL Server LocalDB            | Persistência relacional local sem necessidade de container     |
-| Autenticação   | JWT Bearer                    | Protege endpoints de escrita                                   |
-| Documentação   | Swagger / Swashbuckle         | Exploração e teste dos endpoints                               |
+| Camada         | Tecnologia                    | Função                                    |
+| -------------- | ----------------------------- | ----------------------------------------- |
+| Frontend       | React + TypeScript + Vite     | Interface web                             |
+| Roteamento     | TanStack Router               | Navegação da aplicação                    |
+| Estado & dados | TanStack Query                | Cache, loading e sincronização com a API  |
+| Estilo         | Tailwind CSS + shadcn/ui      | Componentes e identidade visual           |
+| Gráficos       | Recharts                      | Dashboard de participação                 |
+| PDF            | jsPDF                         | Exportação da ata dos workshops           |
+| Backend        | ASP.NET Core Web API (.NET 8) | API REST                                  |
+| ORM            | Entity Framework Core         | Mapeamento objeto-relacional e migrations |
+| Banco de Dados | SQL Server LocalDB            | Persistência relacional                   |
+| Autenticação   | JWT Bearer                    | Proteção dos endpoints de escrita         |
+| Documentação   | Swagger / Swashbuckle         | Exploração e teste dos endpoints          |
+
+---
 
 ## ⚙️ Pré-requisitos
+
+Antes de executar o projeto, tenha instalado:
 
 * [.NET SDK 8.0+](https://dotnet.microsoft.com/download/dotnet/8.0)
 * [Node.js 18+](https://nodejs.org)
 * SQL Server Express **LocalDB**
-* Ferramenta `dotnet-ef`: `dotnet tool install --global dotnet-ef --version 8.0.8`
 
-> O projeto utiliza **SQL Server LocalDB** para desenvolvimento local. Não é necessário instalar ou executar Docker Desktop.
+> O projeto utiliza **SQL Server LocalDB** como banco de desenvolvimento local. Não é necessário instalar ou executar Docker Desktop.
+
+A ferramenta `dotnet-ef` é necessária apenas caso seja necessário criar ou gerenciar migrations manualmente:
+
+```powershell
+dotnet tool install --global dotnet-ef --version 8.0.8
+```
+
+---
 
 ## 📦 Instalação
 
@@ -65,91 +140,149 @@ git clone https://github.com/emfs2-byte/fast-cadence-hub.git
 cd fast-cadence-hub
 ```
 
+---
+
 ### 2. Verificar o SQL Server LocalDB
 
-No PowerShell, execute:
+No PowerShell:
 
 ```powershell
 sqllocaldb info
 ```
 
-Se a instância `MSSQLLocalDB` ainda não existir, crie e inicie com:
+Se aparecer:
+
+```text
+MSSQLLocalDB
+```
+
+a instância já existe.
+
+Caso a instância ainda não tenha sido criada:
 
 ```powershell
 sqllocaldb create MSSQLLocalDB -s
 ```
 
-Se ela já existir, mas estiver parada:
+Caso exista, mas esteja parada:
 
 ```powershell
 sqllocaldb start MSSQLLocalDB
 ```
 
-### 3. Subir o backend
+---
+
+### 3. Executar o backend
+
+Entre na pasta da API:
 
 ```bash
 cd backend/FastWorkshopsApi
+```
+
+Restaure as dependências:
+
+```bash
 dotnet restore
+```
+
+Execute a aplicação:
+
+```bash
 dotnet run
 ```
 
-A API sobe em:
+A API ficará disponível em:
 
 ```text
 http://localhost:5000
 ```
 
-O backend aplica automaticamente as migrations existentes ao iniciar e cria/atualiza o banco `FastWorkshopsDb` no SQL Server LocalDB.
+O backend aplica automaticamente as migrations existentes durante a inicialização e cria/atualiza o banco:
 
-A documentação Swagger fica disponível em:
+```text
+FastWorkshopsDb
+```
+
+A documentação Swagger pode ser acessada em:
 
 ```text
 http://localhost:5000/swagger
 ```
 
-### 4. Subir o frontend
+> Mantenha esse terminal aberto enquanto estiver utilizando o frontend.
 
-Em outro terminal:
+---
 
-```bash
-cd ../..    # volta para a raiz do projeto
-npm install
-npm run dev
+### 4. Configurar o frontend
+
+Na raiz do projeto, crie um arquivo:
+
+```text
+.env
 ```
 
-Acesse `http://localhost:8080` ou a porta indicada pelo Vite no terminal.
-
-> O terminal do backend deve permanecer aberto enquanto o frontend estiver sendo utilizado.
-
-## 🔧 Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do frontend:
+com:
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-No backend, a conexão com o banco é configurada em:
+O `.env` está incluído no `.gitignore` e não deve ser versionado.
 
-```text
-backend/FastWorkshopsApi/appsettings.json
+---
+
+### 5. Executar o frontend
+
+Abra outro terminal e volte para a raiz do projeto:
+
+```bash
+cd ../..
 ```
 
-A connection string utilizada no desenvolvimento local é:
+Instale as dependências:
 
-```text
-Server=(localdb)\MSSQLLocalDB;Database=FastWorkshopsDb;Trusted_Connection=True;TrustServerCertificate=True;
+```bash
+npm install
 ```
 
-> ⚠️ Nunca suba credenciais reais para o repositório — as configurações presentes no projeto são destinadas exclusivamente ao ambiente local de desenvolvimento/demonstração.
+Execute:
+
+```bash
+npm run dev
+```
+
+Acesse a URL exibida pelo Vite no terminal.
+
+Exemplo:
+
+```text
+http://localhost:8080
+```
+
+---
 
 ## 📖 Instruções de Uso
 
-1. Acesse o frontend e explore a lista de **Colaboradores** e **Workshops** — leitura é pública, não exige login.
-2. Para registrar presença, criar, editar ou excluir, clique em **Entrar** e use as credenciais de demonstração do comitê: `comite.workshops` / `fast@2025`.
-3. Abra um workshop na lista para ver a descrição completa e fazer o check-in de cada colaborador.
-4. No **Dashboard**, acompanhe a cadência trimestral e os gráficos de participação.
-5. Exporte a ata de presença em PDF direto do painel de detalhes do workshop.
+1. Inicie o **backend** e o **frontend**.
+2. Acesse a aplicação pelo endereço exibido pelo Vite.
+3. Explore as páginas de **Dashboard**, **Colaboradores** e **Workshops**.
+4. Abra um workshop para visualizar sua descrição e a lista de participantes.
+5. Para executar ações protegidas, autentique-se utilizando as credenciais de demonstração.
+6. Registre ou remova participantes através da ata digital.
+7. Utilize o Dashboard para acompanhar as métricas de participação.
+8. Exporte a ata de um workshop em PDF quando necessário.
+
+### Credenciais de demonstração
+
+```text
+Usuário: comite.workshops
+Senha: fast@2025
+```
+
+> As credenciais existem exclusivamente para demonstração local do desafio técnico.
+
+---
 
 ## 📂 Estrutura do Projeto
 
@@ -157,86 +290,96 @@ Server=(localdb)\MSSQLLocalDB;Database=FastWorkshopsDb;Trusted_Connection=True;T
 fast-cadence-hub/
 ├── backend/
 │   └── FastWorkshopsApi/
-│       ├── Auth/              # Geração e validação de token JWT
-│       ├── Controllers/       # Endpoints REST (Colaboradores, Workshops, Auth)
-│       ├── Data/              # DbContext e configuração do modelo (EF Core)
-│       ├── Dtos/              # Contratos de entrada/saída da API
-│       ├── Migrations/        # Histórico de migrations do Entity Framework
-│       ├── Models/            # Entidades do domínio
-│       ├── Repositories/      # Acesso a dados por entidade
-│       ├── Program.cs         # Configuração e inicialização da API
-│       └── appsettings.json   # Connection string, JWT e configurações
+│       ├── Auth/              # Configuração e geração do JWT
+│       ├── Controllers/       # Endpoints da API
+│       ├── Data/              # DbContext e configuração do EF Core
+│       ├── Dtos/              # Contratos de entrada e saída
+│       ├── Migrations/        # Histórico de migrations
+│       ├── Models/            # Entidades de domínio
+│       ├── Repositories/      # Acesso aos dados
+│       ├── Program.cs         # Configuração da aplicação
+│       ├── appsettings.json   # Banco, JWT e configurações
+│       └── FastWorkshopsApi.csproj
 │
 ├── src/
 │   ├── components/
-│   │   ├── colaboradores/     # Cards e listagem de colaboradores
-│   │   ├── workshops/         # Lista e painel de detalhes/presença
-│   │   ├── dashboard/         # Timeline de cadência e gráficos
-│   │   ├── auth/              # Modal de login e botão de sessão
-│   │   ├── feedback/          # Loading, empty e error states
-│   │   └── layout/            # Cabeçalho e navegação
+│   │   ├── colaboradores/     # Gestão de colaboradores
+│   │   ├── workshops/         # Workshops e ata de presença
+│   │   ├── dashboard/         # Métricas e gráficos
+│   │   ├── auth/              # Autenticação
+│   │   ├── feedback/          # Loading, erros e estados vazios
+│   │   └── layout/            # Estrutura visual
 │   ├── hooks/                 # Hooks de dados e autenticação
-│   ├── services/              # Chamadas à API
-│   ├── data/                  # Tipos compartilhados
-│   └── routes/                # Rotas do TanStack Router
+│   ├── services/              # Comunicação com a API
+│   ├── data/                  # Tipos e estruturas compartilhadas
+│   └── routes/                # Rotas da aplicação
 │
+├── package.json
 └── README.md
 ```
 
+---
+
 ## 🔌 Rotas Principais da API
 
-### Auth
+### 🔐 Auth
 
-| Método | Rota              | Auth | Descrição                                             |
-| ------ | ----------------- | ---- | ----------------------------------------------------- |
-| POST   | `/api/auth/login` | não  | Autentica o comitê organizador e retorna um token JWT |
+| Método | Rota              | Auth | Descrição                                 |
+| ------ | ----------------- | ---- | ----------------------------------------- |
+| POST   | `/api/auth/login` | Não  | Autentica o comitê e retorna um token JWT |
 
-### Colaboradores
+### 👥 Colaboradores
 
 | Método | Rota                      | Auth | Descrição                    |
 | ------ | ------------------------- | ---- | ---------------------------- |
-| GET    | `/api/colaboradores`      | não  | Lista todos os colaboradores |
-| GET    | `/api/colaboradores/{id}` | não  | Detalha um colaborador       |
-| POST   | `/api/colaboradores`      | sim  | Cria um colaborador          |
-| PUT    | `/api/colaboradores/{id}` | sim  | Atualiza um colaborador      |
-| DELETE | `/api/colaboradores/{id}` | sim  | Remove um colaborador        |
+| GET    | `/api/colaboradores`      | Não  | Lista todos os colaboradores |
+| GET    | `/api/colaboradores/{id}` | Não  | Detalha um colaborador       |
+| POST   | `/api/colaboradores`      | Sim  | Cria um colaborador          |
+| PUT    | `/api/colaboradores/{id}` | Sim  | Atualiza um colaborador      |
+| DELETE | `/api/colaboradores/{id}` | Sim  | Remove um colaborador        |
 
-### Workshops
+### 🗓️ Workshops
 
-| Método | Rota                                            | Auth | Descrição                                        |
-| ------ | ----------------------------------------------- | ---- | ------------------------------------------------ |
-| GET    | `/api/workshops`                                | não  | Lista todos os workshops                         |
-| GET    | `/api/workshops/{id}`                           | não  | Detalha um workshop, com a ata de presença       |
-| POST   | `/api/workshops`                                | sim  | Cria um workshop                                 |
-| PUT    | `/api/workshops/{id}`                           | sim  | Atualiza um workshop                             |
-| DELETE | `/api/workshops/{id}`                           | sim  | Remove um workshop                               |
-| POST   | `/api/workshops/{id}/presencas`                 | sim  | Registra a presença de um colaborador (check-in) |
-| DELETE | `/api/workshops/{id}/presencas/{colaboradorId}` | sim  | Remove a presença de um colaborador              |
+| Método | Rota                                            | Auth | Descrição                                 |
+| ------ | ----------------------------------------------- | ---- | ----------------------------------------- |
+| GET    | `/api/workshops`                                | Não  | Lista todos os workshops                  |
+| GET    | `/api/workshops/{id}`                           | Não  | Detalha um workshop e sua ata de presença |
+| POST   | `/api/workshops`                                | Sim  | Cria um workshop                          |
+| PUT    | `/api/workshops/{id}`                           | Sim  | Atualiza um workshop                      |
+| DELETE | `/api/workshops/{id}`                           | Sim  | Remove um workshop                        |
+| POST   | `/api/workshops/{id}/presencas`                 | Sim  | Registra presença de um colaborador       |
+| DELETE | `/api/workshops/{id}/presencas/{colaboradorId}` | Sim  | Remove a presença de um colaborador       |
+
+---
 
 ## 🔐 Autenticação JWT
 
-O login é realizado através do endpoint:
+O login é realizado através de:
 
-```text
+```http
 POST /api/auth/login
 ```
 
-Credenciais de demonstração:
+Exemplo de credenciais:
 
 ```text
 Usuário: comite.workshops
 Senha: fast@2025
 ```
 
-Após o login, a API retorna um token JWT.
+Após a autenticação, a API retorna um **JSON Web Token (JWT)**.
 
-Esse token é enviado nas operações protegidas através do header:
+O token deve ser enviado nos endpoints protegidos:
 
 ```http
 Authorization: Bearer <token>
 ```
 
-Ações de leitura permanecem públicas, enquanto criação, edição, exclusão e gerenciamento de presença exigem autenticação.
+As operações de leitura são públicas.
+
+As operações de criação, edição, exclusão e gerenciamento de presença exigem autenticação.
+
+---
 
 ## 📖 Testando a API com Swagger
 
@@ -249,43 +392,131 @@ http://localhost:5000/swagger
 Para testar uma rota protegida:
 
 1. Execute `POST /api/auth/login`.
-2. Copie o token JWT retornado.
-3. Clique no botão **Authorize** no topo do Swagger.
-4. Informe o token.
-5. Execute normalmente os endpoints protegidos.
+2. Informe as credenciais de demonstração.
+3. Copie o token retornado.
+4. Clique no botão **Authorize** no topo do Swagger.
+5. Cole o token JWT.
+6. Execute normalmente os endpoints protegidos.
 
-## 📐 Decisões de Arquitetura
+O Swagger permite testar diretamente operações como:
 
-* **SQL Server LocalDB via EF Core** — mantém o banco relacional solicitado pelo desafio e elimina a necessidade de executar um container apenas para avaliação local.
-* **Migrations automáticas** — o backend executa `Database.Migrate()` na inicialização, garantindo que o banco esteja atualizado ao executar a aplicação.
-* **Camada de serviço isolada no frontend** — componentes nunca acessam `fetch` diretamente, o que tornou a migração de dados mockados para a API real transparente para a interface.
-* **Repository Pattern no backend** — isola o acesso aos dados da lógica dos controllers e reduz o acoplamento com o Entity Framework.
-* **DTOs em vez de expor entidades do EF diretamente** — evita acoplar o contrato da API ao schema do banco.
-* **Presença como entidade própria (`Presenca`)** — relação muitos-para-muitos entre `Workshop` e `Colaborador`, permitindo consultar e gerenciar a ata de cada evento de forma independente.
-* **JWT Bearer** — autenticação stateless para proteção dos endpoints de escrita, com validação de assinatura, emissor, audiência e validade do token.
-* **Retornos HTTP adequados** — a API utiliza códigos como `200 OK`, `201 Created`, `204 No Content`, `400 Bad Request`, `401 Unauthorized` e `404 Not Found` de acordo com o resultado da operação.
+```text
+GET
+POST
+PUT
+DELETE
+```
 
-## 🧪 Dados de Demonstração
-
-Na primeira execução, o projeto disponibiliza dados iniciais de colaboradores, workshops e participações para facilitar a avaliação das funcionalidades.
-
-Esses dados permitem testar imediatamente:
-
-* listagem de colaboradores;
-* listagem de workshops;
-* detalhes de workshops;
-* ata de presença;
-* métricas de participação;
-* dashboard.
-
-## 📄 Licença
-
-Uso educacional — desenvolvido como desafio técnico. Uso não comercial.
-
-## 👤 Autor
-
-**Erlon Matheus** — Desenvolvedor Full-Stack
+sem necessidade de uma ferramenta externa.
 
 ---
 
+## 📐 Decisões de Arquitetura
+
+* **SQL Server LocalDB via Entity Framework Core** — mantém a persistência relacional utilizando SQL Server e reduz a quantidade de serviços necessários para executar o projeto localmente.
+
+* **Migrations automáticas** — o backend executa `Database.Migrate()` durante a inicialização, mantendo o banco compatível com as migrations versionadas no projeto.
+
+* **Repository Pattern** — o acesso ao banco é separado dos controllers através de repositories.
+
+* **DTOs** — os contratos da API são separados das entidades persistidas pelo Entity Framework.
+
+* **Entidade `Presenca`** — representa a relação muitos-para-muitos entre `Workshop` e `Colaborador`, permitindo registrar e remover participantes individualmente.
+
+* **Camada de serviços no frontend** — a comunicação HTTP fica centralizada em `services`, evitando chamadas à API diretamente nos componentes.
+
+* **JWT Bearer** — utilizado para autenticação stateless e proteção das operações de escrita.
+
+* **Leitura pública** — endpoints `GET` permanecem acessíveis sem autenticação para facilitar a consulta das informações.
+
+* **Retornos HTTP adequados** — a API utiliza códigos como:
+
+```text
+200 OK
+201 Created
+204 No Content
+400 Bad Request
+401 Unauthorized
+404 Not Found
+```
+
+de acordo com o resultado de cada operação.
+
+---
+
+## 🧪 Dados de Demonstração
+
+Na primeira execução, o banco recebe dados iniciais para facilitar a avaliação da aplicação.
+
+Os dados permitem testar imediatamente:
+
+* listagem de colaboradores;
+* listagem de workshops;
+* detalhes dos workshops;
+* participantes;
+* check-in e remoção de presença;
+* métricas de participação;
+* dashboard.
+
+---
+
+## 🤖 Uso de Inteligência Artificial
+
+Ferramentas de Inteligência Artificial foram utilizadas como apoio durante o desenvolvimento do projeto.
+
+O uso de IA auxiliou principalmente em:
+
+* discussão e revisão de decisões de arquitetura;
+* análise de alternativas de persistência e ambiente local;
+* debugging de erros durante a integração;
+* revisão da comunicação entre frontend e backend;
+* planejamento e execução de testes da API;
+* análise de códigos HTTP e comportamento dos endpoints;
+* revisão da documentação e preparação da entrega.
+
+As sugestões geradas pelas ferramentas foram validadas durante o desenvolvimento através da execução local da aplicação, testes dos endpoints, Swagger e builds do frontend e backend.
+
+Os registros e conversas relevantes de uso de IA podem ser disponibilizados juntamente com a entrega do desafio.
+
+---
+
+## ✅ Validações Realizadas
+
+Durante o desenvolvimento foram validados manualmente os principais fluxos da aplicação:
+
+* ✅ Build do backend com `dotnet build`;
+* ✅ Build do frontend com `npm run build`;
+* ✅ Criação de colaboradores (`201 Created`);
+* ✅ Consulta de colaboradores (`200 OK`);
+* ✅ Atualização de workshops (`204 No Content`);
+* ✅ Exclusão de workshops (`204 No Content`);
+* ✅ Consulta de recurso inexistente (`404 Not Found`);
+* ✅ Requisição protegida sem autenticação (`401 Unauthorized`);
+* ✅ Autenticação JWT;
+* ✅ Registro de presença;
+* ✅ Consulta da ata de presença;
+* ✅ Remoção de presença;
+* ✅ Persistência no SQL Server LocalDB;
+* ✅ Documentação e testes através do Swagger.
+
+---
+
+## 📄 Licença
+
+Uso educacional — desenvolvido como desafio técnico.
+
+Uso não comercial.
+
+---
+
+## 👤 Autor
+
+**Erlon Matheus** — Desenvolvedor Full Stack
+
+---
+
+<div align="center">
+
 *FAST Cadence Hub — desenvolvido para o desafio técnico da FAST Soluções.*
+
+</div>
