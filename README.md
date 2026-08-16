@@ -32,12 +32,22 @@ O projeto é dividido em dois serviços independentes que se comunicam via **API
 
 ## 🖼️ Demonstração
 
+### 🔐 Login / Autenticação
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/51ddfb46-fe5c-4c21-9846-eae667431f3a"
+    alt="Tela de Login"
+    width="900"
+  />
+</p>
+
 ### 📊 Dashboard
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/31595b70-e858-44a6-95b5-6134b93b1607"
-    alt="Dashboard do FAST Cadence Hub"
+    src="https://github.com/user-attachments/assets/ac900cbf-9ede-47b1-87df-708b3914bebf"
+    alt="Dashboard"
     width="900"
   />
 </p>
@@ -46,8 +56,8 @@ O projeto é dividido em dois serviços independentes que se comunicam via **API
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/e2d89b15-18da-402e-b841-e0f63f9633e0"
-    alt="Tela de workshops do FAST Cadence Hub"
+    src="https://github.com/user-attachments/assets/73db66e7-deab-4f1a-a935-47f34700675c"
+    alt="Workshops"
     width="900"
   />
 </p>
@@ -56,16 +66,16 @@ O projeto é dividido em dois serviços independentes que se comunicam via **API
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/e0c57d83-6df3-4181-bd1b-7afbb0692ad2"
-    alt="Tela de colaboradores do FAST Cadence Hub"
+    src="https://github.com/user-attachments/assets/daa070f4-95fb-47e6-a9d7-ae635a9845d1"
+    alt="Colaboradores"
     width="900"
   />
 </p>
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/9e6c2a8c-86cc-4580-a29d-e90fc5d68972"
-    alt="Gestão de colaboradores do FAST Cadence Hub"
+    src="https://github.com/user-attachments/assets/07de9978-b97b-4c47-abfa-0bed8358aad9"
+    alt="Gestão de Colaboradores"
     width="900"
   />
 </p>
@@ -89,7 +99,8 @@ O projeto é dividido em dois serviços independentes que se comunicam via **API
 * ✅ **Check-in de Presença (Ata Digital)** — registra e remove presença de colaboradores com persistência no banco de dados.
 * 📊 **Dashboard de Participação** — cards de métricas, linha do tempo de cadência trimestral e gráficos de participação.
 * 🖨️ **Exportação de Ata em PDF** — gera um documento com os dados e participantes de cada workshop.
-* 🔐 **Autenticação JWT** — protege operações de criação, edição, exclusão e gerenciamento de presença.
+* 🔐 **Autenticação JWT** — login e logout disponíveis no frontend, com proteção das operações de criação, edição, exclusão e gerenciamento de presença.
+* 🔔 **Feedback de Operações** — exibe mensagens de sucesso e erro para autenticação e alterações de presença.
 * 🌐 **Leitura Pública** — consultas de colaboradores e workshops podem ser realizadas sem autenticação.
 * 📖 **Documentação Interativa (Swagger)** — endpoints documentados e testáveis diretamente pelo navegador.
 
@@ -264,14 +275,15 @@ http://localhost:8080
 
 ## 📖 Instruções de Uso
 
-1. Inicie o **backend** e o **frontend**.
+1. Inicie o backend e o frontend.
 2. Acesse a aplicação pelo endereço exibido pelo Vite.
-3. Explore as páginas de **Dashboard**, **Colaboradores** e **Workshops**.
+3. Explore as páginas de Dashboard, Colaboradores e Workshops.
 4. Abra um workshop para visualizar sua descrição e a lista de participantes.
-5. Para executar ações protegidas, autentique-se utilizando as credenciais de demonstração.
-6. Registre ou remova participantes através da ata digital.
-7. Utilize o Dashboard para acompanhar as métricas de participação.
-8. Exporte a ata de um workshop em PDF quando necessário.
+5. Para executar ações protegidas, clique em Entrar na barra lateral e utilize as credenciais de demonstração.
+6. Após o login, a interface indica uma sessão ativa e disponibiliza a opção Sair.
+7. Registre ou remova participantes através da ata digital. A interface exibirá uma mensagem de sucesso ou erro para a operação.
+8. Utilize o Dashboard para acompanhar as métricas de participação.
+9. Exporte a ata de um workshop em PDF quando necessário.
 
 ### Credenciais de demonstração
 
@@ -306,11 +318,10 @@ fast-cadence-hub/
 │   │   ├── colaboradores/     # Gestão de colaboradores
 │   │   ├── workshops/         # Workshops e ata de presença
 │   │   ├── dashboard/         # Métricas e gráficos
-│   │   ├── auth/              # Autenticação
 │   │   ├── feedback/          # Loading, erros e estados vazios
-│   │   └── layout/            # Estrutura visual
-│   ├── hooks/                 # Hooks de dados e autenticação
-│   ├── services/              # Comunicação com a API
+│   │   └── layout/            # Estrutura visual e AuthPanel
+│   ├── hooks/                 # Hooks de dados e autenticação (useAuth)
+│   ├── services/              # Comunicação com a API e autenticação
 │   ├── data/                  # Tipos e estruturas compartilhadas
 │   └── routes/                # Rotas da aplicação
 │
@@ -354,7 +365,7 @@ fast-cadence-hub/
 
 ## 🔐 Autenticação JWT
 
-O login é realizado através de:
+O login pode ser realizado pelo botão Entrar na barra lateral do frontend ou diretamente através de:
 
 ```http
 POST /api/auth/login
@@ -369,11 +380,11 @@ Senha: fast@2025
 
 Após a autenticação, a API retorna um **JSON Web Token (JWT)**.
 
-O token deve ser enviado nos endpoints protegidos:
-
+No frontend, o token é armazenado localmente e enviado automaticamente pelo cliente da API nos endpoints protegidos:
 ```http
 Authorization: Bearer <token>
 ```
+Ao utilizar a opção Sair, o token salvo é removido. Caso uma ação protegida seja solicitada sem autenticação, a interface informa que é necessário realizar login.
 
 As operações de leitura são públicas.
 
@@ -425,6 +436,12 @@ sem necessidade de uma ferramenta externa.
 
 * **Camada de serviços no frontend** — a comunicação HTTP fica centralizada em `services`, evitando chamadas à API diretamente nos componentes.
 
+* **Cliente HTTP centralizado** — o `apiFetch` centraliza URL base,envio do JWT e tratamento de erros.
+
+* **Hook de autenticação** — o `useAuth` encapsula login,logout e estado da sessão para a interface.
+
+* **Feedback visual** — tosts informam sucesso ou falha em autenticação e gerenciamento de presença.
+
 * **JWT Bearer** — utilizado para autenticação stateless e proteção das operações de escrita.
 
 * **Leitura pública** — endpoints `GET` permanecem acessíveis sem autenticação para facilitar a consulta das informações.
@@ -472,6 +489,9 @@ O uso de IA auxiliou principalmente em:
 * revisão da comunicação entre frontend e backend;
 * planejamento e execução de testes da API;
 * análise de códigos HTTP e comportamento dos endpoints;
+* implementação e revisão do fluxo de autenticação no frontend;
+* revisão da documentação e preparação da entrega.
+* validação de TypeScript, lint e build de produção;
 * revisão da documentação e preparação da entrega.
 
 As sugestões geradas pelas ferramentas foram validadas durante o desenvolvimento através da execução local da aplicação, testes dos endpoints, Swagger e builds do frontend e backend.
@@ -493,8 +513,10 @@ Durante o desenvolvimento foram validados manualmente os principais fluxos da ap
 * ✅ Consulta de recurso inexistente (`404 Not Found`);
 * ✅ Requisição protegida sem autenticação (`401 Unauthorized`);
 * ✅ Autenticação JWT;
+* ✅ Login e logout pelo frontend;
 * ✅ Registro de presença;
-* ✅ Consulta da ata de presença;
+* ✅ Consulta da ata de presença;<img width="1920" height="950" alt="fast1" src="https://github.com/user-attachments/assets/fdc6ba73-3f74-4277-96f7-e15c6d100a85" />
+
 * ✅ Remoção de presença;
 * ✅ Persistência no SQL Server LocalDB;
 * ✅ Documentação e testes através do Swagger.
