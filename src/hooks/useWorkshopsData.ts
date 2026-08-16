@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Workshop } from "@/data/mocks";
 import { listarColaboradores } from "@/services/colaboradoresService";
@@ -60,23 +61,33 @@ export function useAlternarPresenca() {
 
       if (jaPresente) {
         await removerPresenca(workshop.id, colaboradorId);
+
         return workshop.participantes.filter((id) => id !== colaboradorId);
       }
 
       await registrarPresenca(workshop.id, colaboradorId);
+
       return [...workshop.participantes, colaboradorId].sort((a, b) => a - b);
     },
-    onSuccess: (participantes, { workshop }) => {
+
+    onSuccess: (participantes, { workshop, colaboradorId }) => {
+      const estavaPresente = workshop.participantes.includes(colaboradorId);
+
       queryClient.setQueryData<Workshop[]>(["workshops"], (anterior) =>
-        anterior?.map((item) =>
-          item.id === workshop.id ? { ...item, participantes } : item
-        )
+        anterior?.map((item) => (item.id === workshop.id ? { ...item, participantes } : item)),
+      );
+
+      toast.success(
+        estavaPresente ? "Presença removida com sucesso." : "Presença registrada com sucesso.",
       );
     },
-    onError: () => {
-      // Se a chamada falhar (ex: sessão expirada), sincroniza a UI com o
-      // estado real do banco em vez de deixar um check-in "fantasma".
-      queryClient.invalidateQueries({ queryKey: ["workshops"] });
+
+    onError: (erro) => {
+      toast.error(erro instanceof Error ? erro.message : "Não foi possível atualizar a presença.");
+
+      queryClient.invalidateQueries({
+        queryKey: ["workshops"],
+      });
     },
   });
 }

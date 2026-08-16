@@ -3,7 +3,7 @@
  * token JWT, para que os demais services não precisem repetir essa lógica.
  */
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api";
+const API_URL = import.meta.env["VITE_API_URL"] ?? "http://localhost:5000/api";
 
 export class ApiError extends Error {
   status?: number;
@@ -11,7 +11,10 @@ export class ApiError extends Error {
   constructor(message: string, status?: number) {
     super(message);
     this.name = "ApiError";
-    this.status = status;
+
+    if (status !== undefined) {
+      this.status = status;
+    }
   }
 }
 
@@ -23,16 +26,19 @@ function disponivel(): boolean {
 
 export function getToken(): string | null {
   if (!disponivel()) return null;
+
   return window.localStorage.getItem(TOKEN_KEY);
 }
 
 export function setToken(token: string): void {
   if (!disponivel()) return;
+
   window.localStorage.setItem(TOKEN_KEY, token);
 }
 
 export function clearToken(): void {
   if (!disponivel()) return;
+
   window.localStorage.removeItem(TOKEN_KEY);
 }
 
@@ -51,19 +57,23 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
 
   if (auth) {
     const token = getToken();
+
     if (!token) {
       throw new ApiError("Sessão expirada. Faça login novamente.", 401);
     }
-    finalHeaders.Authorization = `Bearer ${token}`;
+
+    finalHeaders["Authorization"] = `Bearer ${token}`;
   }
 
   let response: Response;
+
   try {
-    response = await fetch(`${API_URL}${path}`, { ...rest, headers: finalHeaders });
+    response = await fetch(`${API_URL}${path}`, {
+      ...rest,
+      headers: finalHeaders,
+    });
   } catch {
-    throw new ApiError(
-      "Não foi possível conectar à API. Verifique se o backend está rodando."
-    );
+    throw new ApiError("Não foi possível conectar à API. Verifique se o backend está rodando.");
   }
 
   // 204 No Content — endpoints de update/delete não retornam corpo.
@@ -72,11 +82,12 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   }
 
   const isJson = response.headers.get("content-type")?.includes("application/json");
+
   const body = isJson ? await response.json().catch(() => null) : null;
 
   if (!response.ok) {
-    const mensagem =
-      body?.mensagem ?? body?.title ?? `Erro ${response.status} ao chamar a API.`;
+    const mensagem = body?.mensagem ?? body?.title ?? `Erro ${response.status} ao chamar a API.`;
+
     throw new ApiError(mensagem, response.status);
   }
 
