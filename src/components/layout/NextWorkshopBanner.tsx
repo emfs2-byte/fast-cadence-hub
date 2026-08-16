@@ -18,7 +18,9 @@ export function NextWorkshopBanner() {
   return (
     <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-primary/25 bg-accent/50 px-4 py-2.5">
       <CalendarClock className="size-4 shrink-0 text-primary" />
-      <span className="mono-tag text-primary">próximo workshop · {rotuloContagem(proximo.diasRestantes)}</span>
+      <span className="mono-tag text-primary">
+        próximo workshop · {rotuloContagem(proximo.diasRestantes)}
+      </span>
       <span className="min-w-0 flex-1 truncate text-sm text-foreground">
         {proximo.workshop.nome}
       </span>

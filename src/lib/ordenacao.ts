@@ -14,9 +14,7 @@ export function ordenarWorkshops(
     if (campo === "presentes") {
       return (a.participantes.length - b.participantes.length) * fator;
     }
-    return (
-      (new Date(a.dataRealizacao).getTime() - new Date(b.dataRealizacao).getTime()) * fator
-    );
+    return (new Date(a.dataRealizacao).getTime() - new Date(b.dataRealizacao).getTime()) * fator;
   });
 }
 

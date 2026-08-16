@@ -56,10 +56,7 @@ export async function removerWorkshop(id: number): Promise<void> {
 }
 
 /** Registra a presença (check-in) de um colaborador na ata do workshop. */
-export async function registrarPresenca(
-  workshopId: number,
-  colaboradorId: number
-): Promise<void> {
+export async function registrarPresenca(workshopId: number, colaboradorId: number): Promise<void> {
   await apiFetch<void>(`/workshops/${workshopId}/presencas`, {
     method: "POST",
     body: JSON.stringify({ colaboradorId }),
@@ -68,10 +65,7 @@ export async function registrarPresenca(
 }
 
 /** Remove a presença de um colaborador da ata do workshop. */
-export async function removerPresenca(
-  workshopId: number,
-  colaboradorId: number
-): Promise<void> {
+export async function removerPresenca(workshopId: number, colaboradorId: number): Promise<void> {
   await apiFetch<void>(`/workshops/${workshopId}/presencas/${colaboradorId}`, {
     method: "DELETE",
     auth: true,

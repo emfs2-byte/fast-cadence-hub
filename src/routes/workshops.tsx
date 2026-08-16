@@ -8,7 +8,6 @@ import { WorkshopList } from "@/components/workshops/WorkshopList";
 import { useAlternarPresenca, useColaboradores, useWorkshops } from "@/hooks/useWorkshopsData";
 import { ordenarWorkshops, type CampoOrdem, type DirecaoOrdem } from "@/lib/ordenacao";
 
-
 export const Route = createFileRoute("/workshops")({
   head: () => ({
     meta: [
@@ -101,4 +100,3 @@ function WorkshopsPage() {
     </div>
   );
 }
-

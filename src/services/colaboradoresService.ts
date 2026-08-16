@@ -26,10 +26,7 @@ export async function criarColaborador(dados: ColaboradorInput): Promise<Colabor
   });
 }
 
-export async function atualizarColaborador(
-  id: number,
-  dados: ColaboradorInput
-): Promise<void> {
+export async function atualizarColaborador(id: number, dados: ColaboradorInput): Promise<void> {
   await apiFetch<void>(`/colaboradores/${id}`, {
     method: "PUT",
     body: JSON.stringify(dados),
